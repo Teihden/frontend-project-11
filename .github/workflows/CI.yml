@@ -1,0 +1,26 @@
+# Name of workflow
+name: CI
+
+on:
+  - push
+
+env:
+  CI: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check-out repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install, lint & test project
+        run: |
+          make install
+          make lint
