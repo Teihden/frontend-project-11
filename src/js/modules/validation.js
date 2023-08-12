@@ -1,7 +1,7 @@
-import { object, string } from 'yup';
+import { object, string, setLocale } from 'yup';
 
 class DuplicateError extends Error {
-  constructor(message, ...parameters) {
+  constructor(...parameters) {
     super(...parameters);
 
     if (Error.captureStackTrace) {
@@ -12,21 +12,25 @@ class DuplicateError extends Error {
     this.inner = [
       {
         path: 'url',
-        message,
+        message: { key: 'errors.validation.duplicateUrl' },
       },
     ];
   }
 }
 
+setLocale({
+  string: {
+    url: () => ({ key: 'errors.validation.validUrl' }),
+  },
+});
+
 const schema = object().shape({
-  url: string()
-    .url('Ссылка должна быть валидным URL')
-    .required('Это обязательное поле для заполнения'),
+  url: string().url().required(),
 });
 
 const validateUniqueness = (state) => {
   if (state.urls.includes(state.form.fields.url)) {
-    throw new DuplicateError('RSS уже существует');
+    throw new DuplicateError();
   }
 };
 
@@ -38,7 +42,7 @@ const validate = (state) => schema.validate(state.form.fields, { abortEarly: fal
   })
   .catch((error) => {
     const validationErrors = error.inner.reduce((accumulator, { path, message }) =>
-      ({ ...accumulator, [path]: message }), {});
+      ({ ...accumulator, [path]: message.key }), {});
 
     state.form.errors = validationErrors;
     state.form.valid = false;
