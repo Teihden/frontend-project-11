@@ -1,4 +1,5 @@
 import '../scss/styles.scss';
 import 'bootstrap';
+import { initiateApplication } from './modules/initiate.js';
 
-console.log('Hello World!');
+initiateApplication();

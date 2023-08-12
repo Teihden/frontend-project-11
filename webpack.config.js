@@ -18,13 +18,14 @@ const config = {
   devServer: {
     open: false,
     host: 'localhost',
+    hot: true,
     static: path.resolve(dirname, 'dist'),
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: 'index.html',
       scriptLoading: 'module',
-      favicon: 'src/assets/favicon.ico',
+      favicon: './src/assets/favicon.ico',
     }),
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/

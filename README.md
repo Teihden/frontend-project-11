@@ -8,7 +8,7 @@
 **"Rss-aggregator"**  is a service for aggregating RSS feeds, which can be used to read a variety of sources, such as blogs. It allows you to add an unlimited number of RSS feeds, updates them itself and adds new entries to the common stream.
 
 ## Vercel deployment
-[https://frontend-project-11-teihden.vercel.app](https://github.com/Teihden/frontend-project-11/workflows/hexlet-check/badge.svg)
+[https://frontend-project-11-teihden.vercel.app](https://frontend-project-11-teihden.vercel.app)
 
 ## Usage
 
