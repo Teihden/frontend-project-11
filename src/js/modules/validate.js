@@ -11,7 +11,9 @@ const schema = object().shape({
 });
 
 const validateUniqueness = (state) => {
-  if (state.urls.includes(state.form.fields.url)) {
+  const urls = state.urls.map(({ url }) => url);
+
+  if (urls.includes(state.form.fields.url)) {
     const error = new Error();
     error.inner = [
       {

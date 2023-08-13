@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const createUrl = (url) =>
+const createProxyUrl = (url) =>
   `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
 
-const request = (state) => axios.get(createUrl(state.form.fields.url))
+const request = (url) => axios.get(createProxyUrl(url))
   .then((response) => response.data.contents)
   .catch((error) => {
     const networkErrors = {};

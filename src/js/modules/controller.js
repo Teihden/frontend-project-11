@@ -1,6 +1,7 @@
 import { request } from './http-client.js';
 import { parse } from './parse.js';
 import { validate } from './validate.js';
+import { setUpdate } from './update.js';
 
 const initiateController = (elements, state) => {
   elements.form.addEventListener('submit', (event) => {
@@ -18,15 +19,19 @@ const initiateController = (elements, state) => {
     validate(state)
       .then(() => {
         state.form.status = 'fetching';
-        return request(state);
+        return request(state.form.fields.url);
       })
       .then(parse)
-      .then(([feeds, posts]) => {
+      .then(([feed, posts]) => {
         state.form.status = 'success';
-        state.content.feeds.unshift(...feeds);
+        state.content.feeds.unshift(feed);
         state.content.posts.unshift(...posts);
-        state.urls.push(state.form.fields.url);
+        state.urls.push({
+          url: state.form.fields.url,
+          id: feed.feedId,
+        });
       })
+      .then(() => setUpdate(request, parse, state))
       .catch((error) => {
         // console.log(error.errors);
 

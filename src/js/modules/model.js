@@ -19,6 +19,7 @@ const initialState = {
     fields: {},
     errors: {},
   },
+  timeoutId: null,
 };
 
 export { elements, initialState };

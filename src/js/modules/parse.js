@@ -1,4 +1,4 @@
-const parse = (data) => {
+const parse = (data, id) => {
   const parser = new DOMParser();
   const document = parser.parseFromString(data, 'text/xml');
   const parserError = document.querySelector('parsererror');
@@ -13,31 +13,32 @@ const parse = (data) => {
     throw newError;
   }
 
-  const feeds = [];
   const feedTitle = document.querySelector('channel > title');
   const feedDescription = document.querySelector('channel > description');
-  const feedId = crypto.randomUUID();
+  const feedId = id || crypto.randomUUID();
   const items = document.querySelectorAll('item');
 
-  feeds.push({
+  const feed = {
     feedTitle: feedTitle.textContent,
     feedDescription: feedDescription.textContent,
     feedId,
-  });
+  };
 
   const posts = [];
   [...items].forEach((item) => {
     const postTitle = item.querySelector('title');
     const postLink = item.querySelector('link');
     const postDescription = item.querySelector('description');
-    const parentPostId = feedId;
+    const postGuid = item.querySelector('guid');
+    const parentFeedId = feedId;
     const postId = crypto.randomUUID();
 
     posts.push({
       postTitle: postTitle.textContent,
       postLink: postLink.textContent,
       postDescription: postDescription.textContent,
-      parentPostId,
+      postGuid: postGuid.textContent,
+      parentFeedId,
       postId,
     });
   });
@@ -45,9 +46,9 @@ const parse = (data) => {
   // console.log('document', document);
   // console.log('parserError', parserError);
   // console.log('posts', posts);
-  // console.log('feeds', feeds);
+  // console.log('feeds', feed);
 
-  return [feeds, posts];
+  return [feed, posts];
 };
 
 export { parse };
