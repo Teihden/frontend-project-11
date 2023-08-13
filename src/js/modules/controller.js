@@ -6,11 +6,9 @@ import { setUpdate } from './update.js';
 const initiateController = (elements, state) => {
   elements.form.addEventListener('submit', (event) => {
     event.preventDefault();
-    state.form.status = 'filling';
     state.form.errors = {};
 
-    const { target } = event;
-    const formData = new FormData(target);
+    const formData = new FormData(event.target);
 
     [...formData.entries()].forEach(([key, value]) => {
       state.form.fields[key] = value.trim();
@@ -33,8 +31,6 @@ const initiateController = (elements, state) => {
       })
       .then(() => setUpdate(request, parse, state))
       .catch((error) => {
-        // console.log(error.errors);
-
         state.form.errors = error.errors;
         state.form.status = 'error';
       });

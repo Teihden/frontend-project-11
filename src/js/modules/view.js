@@ -1,3 +1,8 @@
+const createItems = (heading, items, i18next) =>
+  `<div class="card border-0">
+<div class="card-body"><h2 class="card-title h4">${i18next.t(heading)}</h2></div>
+<ul class="list-group border-0 rounded-0">${items.join('')}</ul></div>`;
+
 const renderContent = (elements, state, i18next) => {
   elements.postContainer.innerHTML = '';
   elements.feedContainer.innerHTML = '';
@@ -11,9 +16,7 @@ const renderContent = (elements, state, i18next) => {
 
   elements.postContainer.insertAdjacentHTML(
     'afterbegin',
-    `<div class="card border-0">
-    <div class="card-body"><h2 class="card-title h4">${i18next.t('posts')}</h2></div>
-    <ul class="list-group border-0 rounded-0">${posts.join('')}</ul></div>`,
+    createItems('posts', posts, i18next),
   );
 
   const feeds = state.content.feeds.map(({ feedTitle, feedDescription }) =>
@@ -23,9 +26,7 @@ const renderContent = (elements, state, i18next) => {
 
   elements.feedContainer.insertAdjacentHTML(
     'afterbegin',
-    `<div class="card border-0">
-    <div class="card-body"><h2 class="card-title h4">${i18next.t('feeds')}</h2></div>
-    <ul class="list-group border-0 rounded-0">${feeds.join('')}</ul></div>`,
+    createItems('feeds', feeds, i18next),
   );
 };
 
@@ -54,13 +55,6 @@ const handleSuccess = (elements, i18next) => {
 
 const handleStatus = (elements, value, i18next) => {
   switch (value) {
-    case 'filling':
-      if (elements.feedback.classList.contains('text-success')) {
-        elements.feedback.classList.add('text-danger');
-        elements.feedback.classList.remove('text-success');
-      }
-      break;
-
     case 'fetching':
       elements.urlInput.disabled = true;
       elements.submit.disabled = true;
