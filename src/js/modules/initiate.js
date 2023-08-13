@@ -1,9 +1,8 @@
 import onChange from 'on-change';
-import { validate } from './validation.js';
+import i18next from 'i18next';
 import { elements, initialState } from './model.js';
 import { watch } from './view.js';
 import { initiateController } from './controller.js';
-import i18next from 'i18next';
 import { resources } from '../locales/index.js';
 
 const initiateApplication = () => {
@@ -14,10 +13,10 @@ const initiateApplication = () => {
     resources,
   })
     .then(() => {
-      const state = onChange(initialState, (path) =>
-        watch(path, elements, state, i18nextInstance));
+      const state = onChange(initialState, (path, value) =>
+        watch(path, value, elements, state, i18nextInstance));
 
-      initiateController(elements, state, validate);
+      initiateController(elements, state);
     });
 };
 
