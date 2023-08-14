@@ -4,6 +4,23 @@ import { validate } from './validate.js';
 import { setUpdate } from './update.js';
 
 const initiateController = (elements, state) => {
+  elements.modal.addEventListener('show.bs.modal', (event) => {
+    const { id } = event.relatedTarget.dataset;
+    const post = state.content.posts.find(({ postId }) => postId === id);
+    const { postTitle, postLink, postDescription } = post;
+
+    elements.modalTitle.textContent = postTitle;
+    elements.modalText.textContent = postDescription;
+    elements.modalLink.href = postLink;
+  });
+
+  elements.postContainer.addEventListener('click', (event) => {
+    if (event.target.matches('[data-id]')) {
+      const { id } = event.target.dataset;
+      state.ui.posts.add(id);
+    }
+  });
+
   elements.form.addEventListener('submit', (event) => {
     event.preventDefault();
     state.form.errors = {};

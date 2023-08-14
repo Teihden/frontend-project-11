@@ -1,22 +1,24 @@
-const createItems = (heading, items, i18next) =>
+const createWrapper = (heading, items, i18next) =>
   `<div class="card border-0">
-<div class="card-body"><h2 class="card-title h4">${i18next.t(heading)}</h2></div>
-<ul class="list-group border-0 rounded-0">${items.join('')}</ul></div>`;
+  <div class="card-body"><h2 class="card-title h4">${i18next.t(heading)}</h2></div>
+  <ul class="list-group border-0 rounded-0">${items.join('')}</ul></div>`;
 
 const renderContent = (elements, state, i18next) => {
   elements.postContainer.innerHTML = '';
   elements.feedContainer.innerHTML = '';
 
-  const posts = state.content.posts.map(({ postTitle, postLink, postId }) =>
-    `<li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
-    <a href="${postLink}" class="fw-bold pe-3" target="_blank" rel="noopener noreferrer">${postTitle}</a>
+  const posts = state.content.posts.map(({ postTitle, postLink, postId }) => {
+    const linkClass = state.ui.posts.has(postId) ? 'fw-normal' : 'fw-bold';
+
+    return `<li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
+    <a href="${postLink}" class="${linkClass} pe-3" target="_blank" rel="noopener noreferrer" data-id="${postId}" data-link>${postTitle}</a>
     <button type="button" class="btn btn-outline-primary btn-sm" data-id="${postId}"
-    data-bs-toggle="modal" data-bs-target="#modal">${i18next.t('view')}</button>
-  </li>`);
+    data-bs-toggle="modal" data-bs-target="#modal">${i18next.t('view')}</button></li>`;
+  });
 
   elements.postContainer.insertAdjacentHTML(
     'afterbegin',
-    createItems('posts', posts, i18next),
+    createWrapper('posts', posts, i18next),
   );
 
   const feeds = state.content.feeds.map(({ feedTitle, feedDescription }) =>
@@ -26,7 +28,7 @@ const renderContent = (elements, state, i18next) => {
 
   elements.feedContainer.insertAdjacentHTML(
     'afterbegin',
-    createItems('feeds', feeds, i18next),
+    createWrapper('feeds', feeds, i18next),
   );
 };
 
@@ -53,6 +55,14 @@ const handleSuccess = (elements, i18next) => {
   }
 };
 
+const changeUiAnchors = (elements, applyData) => {
+  const id = applyData.args[0];
+  const anchor = elements.postContainer.querySelector(`[data-link][data-id="${id}"]`);
+
+  anchor.classList.remove('fw-bold');
+  anchor.classList.add('fw-normal');
+};
+
 const handleStatus = (elements, value, i18next) => {
   switch (value) {
     case 'fetching':
@@ -74,13 +84,11 @@ const handleStatus = (elements, value, i18next) => {
       break;
 
     default:
-      throw new Error(`Unknown process ${value}`); // i18next
+      throw new Error(`Unknown process ${value}`);
   }
 };
 
-const watch = (path, value, elements, state, i18next) => {
-  // console.log('path', path);
-
+const watch = (path, value, applyData, elements, state, i18next) => {
   switch (path) {
     case 'form.errors':
       handleErrors(elements, state, i18next);
@@ -92,6 +100,10 @@ const watch = (path, value, elements, state, i18next) => {
 
     case 'content.posts':
       renderContent(elements, state, i18next);
+      break;
+
+    case 'ui.posts':
+      changeUiAnchors(elements, applyData);
       break;
 
     default:

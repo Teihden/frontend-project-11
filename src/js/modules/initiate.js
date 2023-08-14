@@ -13,8 +13,8 @@ const initiateApplication = () => {
     resources,
   })
     .then(() => {
-      const state = onChange(initialState, (path, value) =>
-        watch(path, value, elements, state, i18nextInstance));
+      const state = onChange(initialState, (path, value, _, applyData) =>
+        watch(path, value, applyData, elements, state, i18nextInstance));
 
       initiateController(elements, state);
     });
