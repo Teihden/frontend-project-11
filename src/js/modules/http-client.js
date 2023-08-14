@@ -10,10 +10,8 @@ const request = (url) => axios.get(createProxyUrl(url))
 
     if (error.response) {
       networkErrors.url = 'errors.network.invalidStatus';
-    } else if (error.request) {
-      networkErrors.url = 'errors.network.noResponse';
     } else {
-      networkErrors.url = 'errors.network.noRequest';
+      networkErrors.url = 'errors.network.invalidResponse';
     }
 
     const newError = new Error();

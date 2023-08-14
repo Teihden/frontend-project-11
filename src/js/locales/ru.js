@@ -7,8 +7,7 @@ const ru = {
       },
       network: {
         invalidStatus: 'Сервер ответил кодом состояния, который не входит в диапазон 2xx',
-        noResponse: 'Запрос был сделан, но ответ от сервера не поступил',
-        noRequest: 'Ошибка сети',
+        invalidResponse: 'Ошибка сети',
       },
       parsing: {
         invalidRss: 'Ресурс не содержит валидный RSS',
