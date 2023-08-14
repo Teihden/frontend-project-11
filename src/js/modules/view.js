@@ -11,7 +11,7 @@ const renderContent = (elements, state, i18next) => {
     const linkClass = state.ui.posts.has(postId) ? 'fw-normal' : 'fw-bold';
 
     return `<li class="list-group-item d-flex justify-content-between align-items-start border-0 border-end-0">
-    <a href="${postLink}" class="${linkClass} pe-3" target="_blank" rel="noopener noreferrer" data-id="${postId}" data-link>${postTitle}</a>
+    <a href="${postLink}" class="${linkClass}" target="_blank" rel="noopener noreferrer" data-id="${postId}" data-link>${postTitle}</a>
     <button type="button" class="btn btn-outline-primary btn-sm" data-id="${postId}"
     data-bs-toggle="modal" data-bs-target="#modal">${i18next.t('view')}</button></li>`;
   });
