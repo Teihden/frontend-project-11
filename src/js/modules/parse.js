@@ -1,22 +1,6 @@
-const parse = (data, id) => {
-  const parser = new DOMParser();
-  const document = parser.parseFromString(data, 'text/xml');
-  const parserError = document.querySelector('parsererror');
-
-  if (parserError) {
-    const parsingErrors = {};
-    parsingErrors.url = 'errors.parsing.invalidRss';
-
-    const newError = new Error();
-    newError.errors = parsingErrors;
-
-    throw newError;
-  }
-
+const createFeedData = (document, feedId) => {
   const feedTitle = document.querySelector('channel > title');
   const feedDescription = document.querySelector('channel > description');
-  const feedId = id || crypto.randomUUID();
-  const items = document.querySelectorAll('item');
 
   const feed = {
     feedTitle: feedTitle.textContent,
@@ -24,7 +8,13 @@ const parse = (data, id) => {
     feedId,
   };
 
+  return feed;
+};
+
+const createPostsData = (document, feedId) => {
   const posts = [];
+  const items = document.querySelectorAll('item');
+
   [...items].forEach((item) => {
     const postTitle = item.querySelector('title');
     const postLink = item.querySelector('link');
@@ -43,10 +33,27 @@ const parse = (data, id) => {
     });
   });
 
-  // console.log('document', document);
-  // console.log('parserError', parserError);
-  // console.log('posts', posts);
-  // console.log('feeds', feed);
+  return posts;
+};
+
+const parse = (data, id) => {
+  const parser = new DOMParser();
+  const document = parser.parseFromString(data, 'text/xml');
+  const parserError = document.querySelector('parsererror');
+
+  if (parserError) {
+    const parsingErrors = {};
+    parsingErrors.url = 'errors.parsing.invalidRss';
+
+    const newError = new Error();
+    newError.errors = parsingErrors;
+
+    throw newError;
+  }
+
+  const feedId = id || crypto.randomUUID();
+  const feed = createFeedData(document, feedId);
+  const posts = createPostsData(document, feedId);
 
   return [feed, posts];
 };

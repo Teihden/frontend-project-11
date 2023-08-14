@@ -3,7 +3,7 @@ import { parse } from './parse.js';
 import { validate } from './validate.js';
 import { setUpdate } from './update.js';
 
-const initiateController = (elements, state) => {
+const initiateModal = (elements, state) => {
   elements.modal.addEventListener('show.bs.modal', (event) => {
     const { id } = event.relatedTarget.dataset;
     const post = state.content.posts.find(({ postId }) => postId === id);
@@ -13,14 +13,18 @@ const initiateController = (elements, state) => {
     elements.modalText.textContent = postDescription;
     elements.modalLink.href = postLink;
   });
+};
 
+const initiatePostContainer = (elements, state) => {
   elements.postContainer.addEventListener('click', (event) => {
     if (event.target.matches('[data-id]')) {
       const { id } = event.target.dataset;
       state.ui.posts.add(id);
     }
   });
+};
 
+const initiateForm = (elements, state) => {
   elements.form.addEventListener('submit', (event) => {
     event.preventDefault();
     state.form.errors = {};
@@ -52,6 +56,12 @@ const initiateController = (elements, state) => {
         state.form.status = 'error';
       });
   });
+};
+
+const initiateController = (elements, state) => {
+  initiateModal(elements, state);
+  initiatePostContainer(elements, state);
+  initiateForm(elements, state);
 };
 
 export { initiateController };
