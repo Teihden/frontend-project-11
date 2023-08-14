@@ -58,4 +58,4 @@ const parse = (data, id) => {
   return [feed, posts];
 };
 
-export { parse };
+export default parse;

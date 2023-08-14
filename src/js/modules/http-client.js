@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const createProxyUrl = (url) =>
-  `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
+const createProxyUrl = (url) => `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
 
 const request = (url) => axios.get(createProxyUrl(url))
   .then((response) => response.data.contents)
@@ -20,4 +19,4 @@ const request = (url) => axios.get(createProxyUrl(url))
     throw newError;
   });
 
-export { request };
+export default request;

@@ -29,8 +29,10 @@ const validateUniqueness = (state) => {
 const validate = (state) => schema.validate(state.form.fields, { abortEarly: false })
   .then(() => validateUniqueness(state))
   .catch((error) => {
-    const validationErrors = error.inner.reduce((accumulator, { path, message }) =>
-      ({ ...accumulator, [path]: message.key }), {});
+    const validationErrors = error.inner.reduce((accumulator, item) => {
+      const { path, message } = item;
+      return ({ ...accumulator, [path]: message.key });
+    }, {});
 
     const newError = new Error();
     newError.errors = validationErrors;
@@ -38,4 +40,4 @@ const validate = (state) => schema.validate(state.form.fields, { abortEarly: fal
     throw newError;
   });
 
-export { validate };
+export default validate;

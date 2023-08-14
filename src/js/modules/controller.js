@@ -1,7 +1,7 @@
-import { request } from './http-client.js';
-import { parse } from './parse.js';
-import { validate } from './validate.js';
-import { setUpdate } from './update.js';
+import request from './http-client.js';
+import parse from './parse.js';
+import validate from './validate.js';
+import setUpdate from './update.js';
 
 const initiateModal = (elements, state) => {
   elements.modal.addEventListener('show.bs.modal', (event) => {
@@ -64,4 +64,4 @@ const initiateController = (elements, state) => {
   initiateForm(elements, state);
 };
 
-export { initiateController };
+export default initiateController;

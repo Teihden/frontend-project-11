@@ -1,5 +1,4 @@
-const createWrapper = (heading, items, i18next) =>
-  `<div class="card border-0">
+const createWrapper = (heading, items, i18next) => `<div class="card border-0">
   <div class="card-body"><h2 class="card-title h4">${i18next.t(heading)}</h2></div>
   <ul class="list-group border-0 rounded-0">${items.join('')}</ul></div>`;
 
@@ -21,8 +20,7 @@ const renderContent = (elements, state, i18next) => {
     createWrapper('posts', posts, i18next),
   );
 
-  const feeds = state.content.feeds.map(({ feedTitle, feedDescription }) =>
-    `<li class="list-group-item border-0 border-end-0">
+  const feeds = state.content.feeds.map(({ feedTitle, feedDescription }) => `<li class="list-group-item border-0 border-end-0">
     <h3 class="h6 m-0">${feedTitle}</h3>
     <p class="m-0 small text-black-50">${feedDescription}</p></li>`);
 
@@ -111,4 +109,4 @@ const watch = (path, value, applyData, elements, state, i18next) => {
   }
 };
 
-export { watch };
+export default watch;

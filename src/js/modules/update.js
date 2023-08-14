@@ -17,12 +17,15 @@ const updateAll = (request, parse, state) => Promise.resolve(state.urls)
   .then((urls) => {
     const requests = urls.map(({ url, id }) => update(url, id, request, parse, state));
     return Promise.allSettled(requests);
-  })
-  .then(() => setUpdate(request, parse, state));
+  });
 
-function setUpdate(request, parse, state) {
+const setUpdate = (request, parse, state) => {
   clearTimeout(state.timeoutId);
-  state.timeoutId = setTimeout(() => updateAll(request, parse, state), TIMEOUT);
-}
 
-export { setUpdate };
+  state.timeoutId = setTimeout(() => {
+    updateAll(request, parse, state)
+      .then(() => setUpdate(request, parse, state));
+  }, TIMEOUT);
+};
+
+export default setUpdate;
